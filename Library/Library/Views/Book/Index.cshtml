@@ -1,0 +1,42 @@
+﻿@model List<Book>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div>
+    @if (Model != null && Model.Count > 0)
+    {
+        <div class="row">
+            @foreach (var b in Model)
+            {
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="card bg-dark text-white mt-2 card-size">
+                        <img src="@b.Image" class="card-img-top" alt="Book image">
+                        <div class="card-body bg-dark">
+                            <h5 class="mb-4">@b.Name</h5>
+                            <p><strong>Author: </strong>@b.Author</p>
+                            @if (!b.Status)
+                            {
+                                <p><strong>Status: </strong><span class="status-color">Available</span></p>
+                            }
+                            else
+                            {
+                                <p><strong>Status: </strong><span class="text-error">Book is taken</span></p>
+                            }
+                        </div>
+                        <div class="card-body text-end bg-dark">
+                            <a asp-action="Details" asp-controller="Book" asp-route-bookId="@b.Id" class="btn btn btn-outline-light m-lg-3">Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <h4 class="text-center">Unfortunately, there are no books available at the moment :c</h4>
+        <p class="text-center mt-2"><a asp-action="Create" asp-controller="Book" class="btn btn-dark">Add new book</a></p>
+    }
+</div>

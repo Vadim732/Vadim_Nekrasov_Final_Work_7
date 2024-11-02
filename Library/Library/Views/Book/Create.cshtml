@@ -1,0 +1,53 @@
+﻿@model Book
+
+@{
+    ViewBag.Title = "Add new book";
+}
+
+<div class="bg-dark text-center pt-5 pb-4">
+    <h3 class="text-white mb-5">Fill out the form to add a new book</h3>
+    <form asp-action="Create" asp-controller="Book" method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div class="form_row mb-3">
+            <label for="name" class="col-4">
+                <input type="text" class="form-control" asp-for="Name" placeholder="Specify book name...">
+                <span asp-validation-for="Name" class="text-error"/>
+            </label>
+        </div>
+        <div class="form_row mb-3">
+            <label for="Author" class="col-4">
+                <input type="text" class="form-control" asp-for="Author" placeholder="Specify book author...">
+                <span asp-validation-for="Author" class="text-error"/>
+            </label>
+        </div>
+        <div class="form_row mb-3">
+            <label for="category" class="col-4">
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories"></select>
+                <span asp-validation-for="CategoryId" class="text-error"/>
+            </label>
+        </div>
+        <div class="form_row mb-3">
+            <label for="image" class="col-4">
+                <input type="text" class="form-control" asp-for="Image" placeholder="Enter the image link...">
+                <span asp-validation-for="Image" class="text-error"/>
+            </label>
+        </div>
+        <div class="form_row mb-3">
+            <label for="" class="col-4">
+                <textarea asp-for="Description" type="text" class="form-control" placeholder="Provide a description of the book..." rows="3"></textarea>
+                <p class="text-secondary">Not necessarily</p>
+            </label>
+        </div>
+        <div class="form_row mb-3">
+            <label for="YearOfIssue" class="col-4">
+                <input type="date" class="form-control" asp-for="YearOfIssue" placeholder="Indicate the year of publication of the book...">
+                <p class="text-secondary">Not necessarily</p>
+            </label>
+        </div>
+        <button type="submit" class="btn btn-outline-light mb-3 w-25">Add new book</button>
+    </form>
+</div>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
