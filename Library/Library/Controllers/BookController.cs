@@ -140,4 +140,25 @@ public class BookController : Controller
         ModelState.AddModelError("", "The user with the specified email does not exist!");
         return View(book);
     }
+    
+    public async Task<IActionResult> ReturnBook(int bookId)
+    {
+        var rentalRecord = await _context.BookUsersRents
+            .Include(bur => bur.Book)
+            .FirstOrDefaultAsync(bur => bur.Id == bookId && bur.ReturnDate == null);
+
+        if (rentalRecord == null)
+        {
+            return NotFound();
+        }
+        
+        rentalRecord.Book.Status = false;
+        rentalRecord.ReturnDate = DateTime.UtcNow;
+
+        _context.Update(rentalRecord.Book);
+        _context.Update(rentalRecord);
+        await _context.SaveChangesAsync();
+        
+        return RedirectToAction("Profile", "User", new { userId = rentalRecord.UserId });
+    }
 }

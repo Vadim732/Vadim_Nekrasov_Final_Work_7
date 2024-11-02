@@ -54,6 +54,7 @@
                         }
                     </div>
                     <div class="card-body text-end bg-dark">
+                        <a asp-action="ReturnBook" asp-controller="Book" asp-route-bookId="@bur.Id" class="btn btn-light">Return a book</a>
                         <a asp-action="Details" asp-controller="Book" asp-route-bookId="@bur.Book.Id" class="btn btn btn-outline-light m-lg-3">Details</a>
                     </div>
                 </div>
