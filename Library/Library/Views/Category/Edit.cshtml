@@ -1,0 +1,24 @@
+﻿@model Category
+
+@{
+    ViewBag.Title = "Add new category";
+}
+
+<div class="bg-dark text-center pt-5 pb-4">
+    <h3 class="text-white mb-5">Fill out the form to edit the category</h3>
+    <form asp-action="Edit" asp-controller="Category" method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+        <input type="hidden" asp-for="Id"/>
+        <div class="form_row mb-3">
+            <label for="" class="col-4">
+                <input type="text" class="form-control" asp-for="Name" placeholder="Enter the category name...">
+                <span asp-validation-for="Name" class="text-error" />
+            </label>
+        </div>
+        <button type="submit" class="btn btn-outline-light mb-3 w-25">Save</button>
+    </form>
+</div>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

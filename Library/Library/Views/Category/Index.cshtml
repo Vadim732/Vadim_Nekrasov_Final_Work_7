@@ -1,0 +1,35 @@
+﻿@model List<Category>
+
+@{
+    ViewBag.Title = "List categories";
+}
+
+@if (Model != null && Model.Count != 0)
+{
+    <table class="table table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th>Name</th>
+            <th>Action</th>
+            <th><a asp-action="Create" asp-controller="Category" class="btn btn-outline-light">Add new category</a></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.Name</td>
+                <td>
+                    <a asp-action="Delete" asp-controller="Category" asp-route-categoryId="@c.Id" class="btn btn-outline-danger">Delete</a>
+                    <a asp-action="Edit" asp-controller="Category" asp-route-categoryId="@c.Id" class="btn btn-outline-dark">Edit</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <h4 class="text-center">Unfortunately, the list of categories is currently empty :с</h4>
+    <p class="text-center"><a asp-action="Create" asp-controller="Category" class="btn btn-dark">Add new category</a></p>
+}
