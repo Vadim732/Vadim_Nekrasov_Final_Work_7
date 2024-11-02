@@ -16,7 +16,7 @@ public class BookController : Controller
         _context = context;
     }
 
-    public async Task<IActionResult> Index(string name, string author, bool? status, SortBookState sortBookState = SortBookState.NameAsc, int page = 1)
+    public async Task<IActionResult> Index(string name, string author, bool? status, SortBookState sortBookState = SortBookState.DateAddedDesc, int page = 1)
     {
         IQueryable<Book> books = _context.Books.Include(b => b.Category).OrderByDescending(b => b.DateAdded);
 
@@ -36,6 +36,7 @@ public class BookController : Controller
         ViewBag.NameSort = sortBookState == SortBookState.NameAsc ? SortBookState.NameDesc : SortBookState.NameAsc;
         ViewBag.AuthorSort = sortBookState == SortBookState.AuthorAsc ? SortBookState.AuthorDesc : SortBookState.AuthorAsc;
         ViewBag.StatusSort = sortBookState == SortBookState.StatusAsc ? SortBookState.StatusDesc : SortBookState.StatusAsc;
+        ViewBag.DateAddedSort = sortBookState == SortBookState.DateAddedAsc ? SortBookState.DateAddedDesc : SortBookState.DateAddedAsc;
 
         switch (sortBookState)
         {
@@ -126,14 +127,23 @@ public class BookController : Controller
     {
         if (ModelState.IsValid)
         {
-            _context.Books.Update(book);
-            await _context.SaveChangesAsync();
+            var existingBook = await _context.Books.AsNoTracking().FirstOrDefaultAsync(b => b.Id == book.Id);
+            if (existingBook != null)
+            {
+                book.DateAdded = existingBook.DateAdded;
 
-            return RedirectToAction("Index");
+                _context.Books.Update(book);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Index");
+            }
+            return NotFound();
         }
-
+        
+        ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Name");
         return View(book);
     }
+
     
     public async Task<IActionResult> Delete(int bookId)
     {

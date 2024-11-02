@@ -8,4 +8,6 @@ public enum SortBookState
     AuthorDesc,
     StatusAsc,
     StatusDesc,
+    DateAddedAsc,
+    DateAddedDesc
 }
