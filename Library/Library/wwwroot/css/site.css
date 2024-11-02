@@ -42,3 +42,11 @@ body {
 .mr-2 {
   margin-right: 1.6em;
 }
+
+.sort-stick {
+  margin-top: 0.6em;
+  margin-bottom: 0.8em;
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  border-radius: 0.5em;
+}

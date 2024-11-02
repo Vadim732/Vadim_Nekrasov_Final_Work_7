@@ -1,0 +1,25 @@
+﻿@model Library.ViewModels.EmailConfirmationViewModel
+
+@{
+    ViewBag.Title = "Email Confirmation";
+}
+
+<div class="bg-dark text-white text-center mt-4 d-flex justify-content-center sort-stick">
+    <div class="w-50">
+        <h3>Confirm Email</h3>
+        <form asp-action="ConfirmEmail" method="post">
+            <div asp-validation-summary="All" class="text-error"></div>
+            <input type="hidden" asp-for="UserId"/>
+            <div class="mb-3">
+                <input asp-for="Email" class="form-control" placeholder="Enter your email..."/>
+                <span asp-validation-for="Email" class="text-error"></span>
+            </div>
+            <button type="submit" class="btn btn-outline-light">Confirm</button>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

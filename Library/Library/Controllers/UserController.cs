@@ -1,4 +1,5 @@
 ﻿using Library.Models;
+using Library.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,7 +13,7 @@ public class UserController : Controller
     {
         _context = context;
     }
-    
+
     public async Task<IActionResult> Index()
     {
         List<User> users = await _context.Users.ToListAsync();
@@ -76,6 +77,36 @@ public class UserController : Controller
         return RedirectToAction("Index");
     }
     
+    public IActionResult ConfirmEmail(int userId)
+    {
+        return View(new EmailConfirmationViewModel { UserId = userId });
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> ConfirmEmail(EmailConfirmationViewModel model)
+    {
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == model.UserId);
+    
+        if (user != null && user.Email.ToLower() == model.Email.ToLower())
+        {
+            return RedirectToAction("Profile", new { userId = model.UserId });
+        }
+    
+        ModelState.AddModelError("", "The email you entered is incorrect!");
+        return View(model);
+    }
+    
+    public async Task<IActionResult> Profile(int userId)
+    {
+        User user = await _context.Users.Include(u => u.BookUsersRents.Where(bur => bur.ReturnDate == null)).ThenInclude(bur => bur.Book).FirstOrDefaultAsync(u => u.Id == userId);
+        if (user != null)
+        {
+            return View(user);
+        }
+
+        return NotFound();
+    }
+
     public async Task<bool> CheckEmail(string email)
     {
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());

@@ -1,0 +1,68 @@
+﻿@model User
+
+@{
+    ViewBag.Title = "User profile";
+}
+
+<table class="table table-striped">
+    <thead class="table-dark">
+    <tr>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Email</th>
+        @if (Model.PhoneNumber != null)
+        {
+            <th>Phone number</th>
+        }
+        <th>
+            <a asp-action="Delete" asp-controller="User" asp-route-userId="@Model.Id" class="btn btn-outline-danger">Delete</a>
+            <a asp-action="Edit" asp-controller="User" asp-route-userId="@Model.Id" class="btn btn-outline-light">Edit</a>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>@Model.Name</td>
+        <td>@Model.Surname</td>
+        <td>@Model.Email</td>
+        @if (Model.PhoneNumber != null)
+        {
+            <td>@Model.PhoneNumber</td>
+        }
+    </tr>
+    </tbody>
+</table>
+
+@if (Model.BookUsersRents != null && Model.BookUsersRents.Any())
+{
+    <div class="row mt-3">
+        @foreach (var bur in Model.BookUsersRents)
+        {
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="card bg-dark text-white mt-2 card-size">
+                    <img src="@bur.Book.Image" class="card-img-top" alt="Book image">
+                    <div class="card-body bg-dark">
+                        <h5 class="mb-4">@bur.Book.Name</h5>
+                        <p><strong>Author: </strong>@bur.Book.Author</p>
+                        @if (!bur.Book.Status)
+                        {
+                            <p><strong>Status: </strong><span class="status-color">Available</span></p>
+                        }
+                        else
+                        {
+                            <p><strong>Status: </strong><span class="text-error">Book is taken</span></p>
+                        }
+                    </div>
+                    <div class="card-body text-end bg-dark">
+                        <a asp-action="Details" asp-controller="Book" asp-route-bookId="@bur.Book.Id" class="btn btn btn-outline-light m-lg-3">Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <h4 class="text-center">You haven't borrowed any books yet.</h4>
+    <p class="text-center mt-2"><a asp-action="Index" asp-controller="Book" class="btn btn-dark">To book list page</a></p>
+}

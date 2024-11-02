@@ -15,4 +15,5 @@ public class User
     [Remote(action: "CheckEmail", controller: "User", ErrorMessage = "This email address is already taken!")]
     public string Email { get; set; }
     public string? PhoneNumber { get; set; }
+    public ICollection<BookUsersRent>? BookUsersRents { get; set; }
 }

@@ -29,8 +29,7 @@
                     <td>@u.PhoneNumber</td>
                 }
                 <td>
-                    <a asp-action="Delete" asp-controller="User" asp-route-userId="@u.Id" class="btn btn-outline-danger">Delete</a>
-                    <a asp-action="Edit" asp-controller="User" asp-route-userId="@u.Id" class="btn btn-outline-dark">Edit</a>
+                    <a asp-action="ConfirmEmail" asp-controller="User" asp-route-userId="@u.Id" class="btn btn-outline-dark">Profile</a>
                 </td>
             </tr>
         }
