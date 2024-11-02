@@ -1,0 +1,46 @@
+﻿@model Book
+
+@{
+    ViewBag.Title = "Book is taken";
+}
+
+<div class="row">
+    <div class="col-lg-3 col-md-6 col-sm-12">
+        <div class="card bg-dark text-white mt-2 card-size">
+            <img src="@Model.Image" class="card-img-top" alt="Book image">
+            <div class="card-body bg-dark">
+                <h5 class="mb-4">@Model.Name</h5>
+                <p><strong>Author: </strong>@Model.Author</p>
+                @if (!Model.Status)
+                {
+                    <p><strong>Status: </strong><span class="status-color">Available</span></p>
+                }
+                else
+                {
+                    <p><strong>Status: </strong><span class="text-error">Book is taken</span></p>
+                }
+            </div>
+            <div class="card-body text-end bg-dark">
+                <a asp-action="Index" asp-controller="Book" class="btn btn-light">To main page</a>
+                <a asp-action="Details" asp-controller="Book" asp-route-bookId="@Model.Id" class="btn btn btn-outline-light m-lg-3">Details</a>
+            </div>
+        </div>
+    </div>
+    <div class="text-center bg-dark text-white col-4">
+        <h5 class="mt-5 mb-3">
+            You have selected the book <span class="status-color">@Model.Name</span> <br />
+            Author <span class="status-color">@Model.Author</span> <br />
+            Enter your email to receive the book.
+        </h5>
+        <form asp-action="Rent" asp-controller="Book" method="post" class="mt-4">
+            <div asp-validation-summary="All" class="text-error"></div>
+            <input type="email" class="form-control w-100 text-center" name="email" placeholder="Enter your email..."/>
+            <input type="hidden" name="bookId" value="@Model.Id"/>
+            <button type="submit" class="btn btn-outline-light mt-3 w-50">Get the book</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

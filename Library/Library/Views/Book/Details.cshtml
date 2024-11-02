@@ -25,6 +25,10 @@
                 <p><strong>Year of issue: </strong>@Model.YearOfIssue</p>
             }
             <div class="border-top border-white mt-1 mb-1">
+                @if (!Model.Status)
+                {
+                    <p class="text-center mt-4"><a asp-action="Rent" asp-controller="Book" asp-route-bookId="@Model.Id" class="btn btn-outline-success w-75">Take a book</a></p>
+                }
                 <p class="text-center mt-4"><a asp-action="Index" asp-controller="Book" class="btn btn-outline-light w-75">To main page</a></p>
                 <p class="text-center mt-2"><a asp-action="Edit" asp-controller="Book" asp-route-bookId="@Model.Id" class="btn btn-outline-light w-75">Edit</a></p>
                 <p class="text-center mt-2"><a asp-action="Delete" asp-controller="Book" asp-route-bookId="@Model.Id" class="btn btn-outline-danger w-75">Delete</a></p>

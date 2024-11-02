@@ -27,6 +27,10 @@
                             }
                         </div>
                         <div class="card-body text-end bg-dark">
+                            @if (!b.Status)
+                            {
+                                <a asp-action="Rent" asp-controller="Book" asp-route-bookId="@b.Id" class="btn btn-light">Take a book</a>
+                            }
                             <a asp-action="Details" asp-controller="Book" asp-route-bookId="@b.Id" class="btn btn btn-outline-light m-lg-3">Details</a>
                         </div>
                     </div>
