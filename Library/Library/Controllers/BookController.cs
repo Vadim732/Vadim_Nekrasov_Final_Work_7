@@ -228,4 +228,11 @@ public class BookController : Controller
         
         return RedirectToAction("Profile", "User", new { userId = rentalRecord.UserId });
     }
+
+    public async Task<IActionResult> IssuedBooks()
+    {
+        var issuedBooks = await _context.BookUsersRents.Include(bur => bur.Book).Include(bur => bur.User).ToListAsync();
+
+        return View(issuedBooks);
+    }
 }

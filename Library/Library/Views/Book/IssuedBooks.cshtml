@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Library.Models.BookUsersRent>
+
+@{
+    ViewBag.Title = "History of the taking of the books";
+}
+
+@if (Model != null)
+{
+    <table class="table table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th>Book name</th>
+            <th>Author</th>
+            <th>Book borrower</th>
+            <th>Receipt date</th>
+            <th>Return date</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var rent in Model)
+        {
+            <tr>
+                <td>@rent.Book.Name</td>
+                <td>@rent.Book.Author</td>
+                <td>@rent.User.Name @rent.User.Surname</td>
+                <td>@rent.ReceiptDate.ToString("dd.MM.yyyy")</td>
+                <td>
+                    @if (rent.ReturnDate.HasValue)
+                    {
+                        @rent.ReturnDate.Value.ToString("dd.MM.yyyy")
+                    }
+                    else
+                    {
+                        <span>Not returned</span>
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <h4 class="text-center">The history of taking the books is empty :с</h4>
+    <p class="text-center"><a asp-action="Index" asp-controller="Book" class="btn btn-dark">To main page</a></p>
+}
