@@ -1,15 +1,30 @@
-﻿@model List<Book>
+﻿@model Library.ViewModels.BookIndexViewModel
 
 @{
-    ViewBag.Title = "title";
-    Layout = "_Layout";
+    ViewBag.Title = "Main page - list books";
 }
 
+<div class="text-center">
+    <button type="button" class="btn btn-dark m-0 mx-auto" data-bs-toggle="modal" data-bs-target="#filtration">Filtration</button>
+</div>
+
+<div class="bg-dark sort-stick text-white d-flex justify-content-center align-items-center p-3">
+    <div class="me-auto">
+        <a asp-action="Index" asp-controller="Book" asp-route-sortBookState="@ViewBag.NameSort" class="btn btn-outline-light">Book name</a>
+    </div>
+    <div class="m-0 mx-auto">
+        <a asp-action="Index" asp-controller="Book" asp-route-sortBookState="@ViewBag.AuthorSort" class="btn btn-outline-light">Author</a>
+    </div>
+    <div class="ms-auto">
+        <a asp-action="Index" asp-controller="Book" asp-route-sortBookState="@ViewBag.StatusSort" class="btn btn-outline-light">Status</a>
+    </div>
+</div>
+
 <div>
-    @if (Model != null && Model.Count > 0)
+    @if (Model != null && Model.Books != null && Model.Books.Count > 0)
     {
         <div class="row">
-            @foreach (var b in Model)
+            @foreach (var b in Model.Books)
             {
                 <div class="col-lg-3 col-md-6 col-sm-12">
                     <div class="card bg-dark text-white mt-2 card-size">
@@ -43,4 +58,52 @@
         <h4 class="text-center">Unfortunately, there are no books available at the moment :c</h4>
         <p class="text-center mt-2"><a asp-action="Create" asp-controller="Book" class="btn btn-dark">Add new book</a></p>
     }
+</div>
+
+<div class="bg-dark sort-stick text-white mt-3 d-flex justify-content-center align-items-center p-3">
+    <div class="me-auto">
+        @if (Model.PageViewModel.HasPreviousPage)
+        {
+            <a asp-action="Index" asp-route-page="@(Model.PageViewModel.PageNumber - 1)" class="btn btn-outline-light">Back</a>
+        }
+    </div>
+    <h5 class="m-0 mx-auto">Pages</h5>
+    <div class="ms-auto">
+        @if (Model.PageViewModel.HasNextPage)
+        {
+            <a asp-action="Index" asp-route-page="@(Model.PageViewModel.PageNumber + 1)" class="btn btn-outline-light">Next</a>
+        }
+    </div>
+</div>
+
+<div class="modal fade" id="filtration" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Task filtration</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-white bg-dark">
+                <form method="get" class="mb-3">
+                    <div class="form-inline border-white border-bottom pb-2">
+                        <p class="text-secondary">Specify the book name to filter by name</p>
+                        <input type="text" name="name" value="@Model.FilterName" class="form-control me-2 w-100" placeholder="Enter book name..."/>
+                    </div>
+                    <div class="form-inline border-white border-bottom pb-2">
+                        <p class="text-secondary">Specify the book author to filter by author name</p>
+                        <input type="text" name="author" value="@Model.FilterAuthor" class="form-control me-2 w-100" placeholder="Enter book author..."/>
+                    </div>
+                    <div class="form-inline border-white border-bottom pb-2">
+                        <p class="text-secondary">Filter by book status</p>
+                        <select name="status" class="form-select w-100">
+                            <option value="">All tasks</option>
+                            <option value="true" selected="@(Model.FilterStatusBusy)" >Taken</option>
+                            <option value="false" selected="@(Model.FilterStatusFree)">Available</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-outline-light mt-4 w-50 mx-auto d-block">Apply</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

@@ -24,10 +24,7 @@
                 <td>@u.Name</td>
                 <td>@u.Surname</td>
                 <td>@u.Email</td>
-                @if (u.PhoneNumber != null)
-                {
-                    <td>@u.PhoneNumber</td>
-                }
+                <td>@u.PhoneNumber</td>
                 <td>
                     <a asp-action="ConfirmEmail" asp-controller="User" asp-route-userId="@u.Id" class="btn btn-outline-dark">Profile</a>
                 </td>

@@ -29,7 +29,7 @@
         <div class="form_row mb-3">
             <label for="" class="col-4">
                 <input type="text" class="form-control" asp-for="PhoneNumber" placeholder="Enter your phone number...">
-                <p class="text-secondary">Not necessarily</p>
+                <span asp-validation-for="PhoneNumber" class="text-error"/>
             </label>
         </div>
         <button type="submit" class="btn btn-outline-light mb-3 w-25">Register</button>

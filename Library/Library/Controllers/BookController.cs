@@ -1,4 +1,6 @@
 ﻿using Library.Models;
+using Library.Services;
+using Library.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,10 +16,65 @@ public class BookController : Controller
         _context = context;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string name, string author, bool? status, SortBookState sortBookState = SortBookState.NameAsc, int page = 1)
     {
-        List<Book> books = await _context.Books.Include(b => b.Category).OrderByDescending(b => b.DateAdded).ToListAsync();
-        return View(books);
+        IQueryable<Book> books = _context.Books.Include(b => b.Category).OrderByDescending(b => b.DateAdded);
+
+        if (!string.IsNullOrWhiteSpace(name))
+        {
+            books = books.Where(b => b.Name.Contains(name));
+        }
+        if (!string.IsNullOrWhiteSpace(author))
+        {
+            books = books.Where(b => b.Author.Contains(author));
+        }
+        if (status.HasValue)
+        {
+            books = books.Where(b => b.Status == status.Value);
+        }
+        
+        ViewBag.NameSort = sortBookState == SortBookState.NameAsc ? SortBookState.NameDesc : SortBookState.NameAsc;
+        ViewBag.AuthorSort = sortBookState == SortBookState.AuthorAsc ? SortBookState.AuthorDesc : SortBookState.AuthorAsc;
+        ViewBag.StatusSort = sortBookState == SortBookState.StatusAsc ? SortBookState.StatusDesc : SortBookState.StatusAsc;
+
+        switch (sortBookState)
+        {
+            case SortBookState.NameAsc:
+                books = books.OrderBy(b => b.Name);
+                break;
+            case SortBookState.NameDesc:
+                books = books.OrderByDescending(b => b.Name);
+                break;
+            case SortBookState.AuthorAsc:
+                books = books.OrderBy(b => b.Author);
+                break;
+            case SortBookState.AuthorDesc:
+                books = books.OrderByDescending(b => b.Author);
+                break;
+            case SortBookState.StatusAsc:
+                books = books.OrderBy(b => b.Status);
+                break;
+            case SortBookState.StatusDesc:
+                books = books.OrderByDescending(b => b.Status);
+                break;
+        }
+        
+        int pageSize = 2;
+        int count = books.Count();
+        var items = books.Skip((page - 1) * pageSize).Take(pageSize);
+        PageViewModel pvm = new PageViewModel(books.Count(), page, pageSize);
+
+        var bivm = new BookIndexViewModel()
+        {
+            Books = items.ToList(),
+            PageViewModel = pvm,
+            FilterName = name,
+            FilterAuthor = author,
+            FilterStatusBusy = (status == true),
+            FilterStatusFree = (status == false)
+        };
+        
+        return View(bivm);
     }
     
     public async Task<IActionResult> Create()

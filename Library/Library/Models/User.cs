@@ -14,6 +14,8 @@ public class User
     [EmailAddress(ErrorMessage = "Enter your valid email address!")]
     [Remote(action: "CheckEmail", controller: "User", ErrorMessage = "This email address is already taken!")]
     public string Email { get; set; }
-    public string? PhoneNumber { get; set; }
+    [Required]
+    [RegularExpression(@"^\+?\d{10,15}$", ErrorMessage = "Enter a valid your phone number!")]
+    public string PhoneNumber { get; set; }
     public ICollection<BookUsersRent>? BookUsersRents { get; set; }
 }
