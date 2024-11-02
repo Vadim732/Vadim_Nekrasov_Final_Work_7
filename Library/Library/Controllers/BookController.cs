@@ -131,6 +131,7 @@ public class BookController : Controller
             if (existingBook != null)
             {
                 book.DateAdded = existingBook.DateAdded;
+                book.Status = existingBook.Status;
 
                 _context.Books.Update(book);
                 await _context.SaveChangesAsync();
@@ -143,7 +144,6 @@ public class BookController : Controller
         ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Name");
         return View(book);
     }
-
     
     public async Task<IActionResult> Delete(int bookId)
     {

@@ -4,7 +4,7 @@
     ViewBag.Title = "History of the taking of the books";
 }
 
-@if (Model != null)
+@if (Model != null && Model.Any())
 {
     <table class="table table-striped">
         <thead class="table-dark">
@@ -20,7 +20,7 @@
         @foreach (var rent in Model)
         {
             <tr>
-                <td>@rent.Book.Name</td>
+                <td><a asp-action="Details" asp-controller="Book" asp-route-bookId="@rent.Book.Id" class="text-dark">@rent.Book.Name</a></td>
                 <td>@rent.Book.Author</td>
                 <td>@rent.User.Name @rent.User.Surname</td>
                 <td>@rent.ReceiptDate.ToString("dd.MM.yyyy")</td>
