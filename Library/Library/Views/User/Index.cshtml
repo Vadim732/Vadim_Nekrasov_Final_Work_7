@@ -1,0 +1,44 @@
+﻿@model List<User>
+
+@{
+    ViewBag.Title = "Users list";
+}
+
+@if (Model != null && Model.Count != 0)
+{
+    <table class="table table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Email</th>
+            <th>Phone number</th>
+            <th>Action</th>
+            <th><a asp-action="Create" asp-controller="User" class="btn btn-outline-light">Add new user</a></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var u in Model)
+        {
+            <tr>
+                <td>@u.Name</td>
+                <td>@u.Surname</td>
+                <td>@u.Email</td>
+                @if (u.PhoneNumber != null)
+                {
+                    <td>@u.PhoneNumber</td>
+                }
+                <td>
+                    <a asp-action="Delete" asp-controller="User" asp-route-userId="@u.Id" class="btn btn-outline-danger">Delete</a>
+                    <a asp-action="Edit" asp-controller="User" asp-route-userId="@u.Id" class="btn btn-outline-dark">Edit</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <h4 class="text-center">Unfortunately, at the moment there is no users yet :с</h4>
+    <p class="text-center"><a asp-action="Create" asp-controller="User" class="btn btn-dark">Add new user</a></p>
+}

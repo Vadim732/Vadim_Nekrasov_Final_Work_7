@@ -1,0 +1,41 @@
+﻿@model User
+
+@{
+    ViewBag.Title = "Add new user";
+}
+
+<div class="bg-dark text-center pt-5 pb-4">
+    <h3 class="text-white mb-5">Fill out the form to register</h3>
+    <form asp-action="Create" asp-controller="User" method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div class="form_row mb-3">
+            <label for="" class="col-4">
+                <input type="text" class="form-control" asp-for="Name" placeholder="Enter your name...">
+                <span asp-validation-for="Name" class="text-error"/>
+            </label>
+        </div>
+        <div class="form_row mb-3">
+            <label for="" class="col-4">
+                <input type="text" class="form-control" asp-for="Surname" placeholder="Enter your surname...">
+                <span asp-validation-for="Surname" class="text-error"/>
+            </label>
+        </div>
+        <div class="form_row mb-3">
+            <label for="" class="col-4">
+                <input type="email" class="form-control" asp-for="Email" placeholder="Enter your email...">
+                <span asp-validation-for="Email" class="text-error"/>
+            </label>
+        </div>
+        <div class="form_row mb-3">
+            <label for="" class="col-4">
+                <input type="text" class="form-control" asp-for="PhoneNumber" placeholder="Enter your phone number...">
+                <p class="text-secondary">Not necessarily</p>
+            </label>
+        </div>
+        <button type="submit" class="btn btn-outline-light mb-3 w-25">Register</button>
+    </form>
+</div>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
